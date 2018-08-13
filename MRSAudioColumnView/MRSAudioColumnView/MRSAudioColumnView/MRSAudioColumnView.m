@@ -110,8 +110,10 @@
     // 当lineView的x值大于柱形图最大x值的时候，再次请求数据
     if (self.lineView.frame.origin.x > self.columnViewMaxX) {
         if([self.delegate respondsToSelector:@selector(fetchData)]) {
-            NSNumber *number = [self.delegate fetchData];
-            [self.soundMeters addObject:number];
+            CGFloat number = [self.delegate fetchData];
+            NSUInteger scale = (self.frame.size.height / 2) / 1; //(self.frame.size.height / 2):view的一半高度为最大值，1：表示录音最大值1
+            CGFloat value = number * scale;
+            [self.soundMeters addObject:@(value)];
             [self addColumnView:self.soundMeters.count - 1];
         }
     }
@@ -124,7 +126,7 @@
             [self.delegate currentTime:self.recordTime totalTime:self.totalTime];
         }
     } else {
-        NSLog(@"-----FINISH--");
+        NSLog(@"-----finish--");
          [self finish];
     }
 }
@@ -142,7 +144,8 @@
 
 // 增加一个ColumnView
 - (void)addColumnView:(NSUInteger)i {
-    NSNumber *number = self.soundMeters[i];
+    CGFloat number = [self.soundMeters[i] doubleValue];
+    
     CGFloat viewY = (self.frame.size.height) / 2;
     UIView *view = [[UIView alloc] initWithFrame:CGRectMake(i * self.columnViewWidth * 2, viewY, self.columnViewWidth, 0)];
     
@@ -152,8 +155,8 @@
     
     // 执行动画，改变高度
     [UIView animateWithDuration:0.2 animations:^{
-        CGFloat viewY = (self.frame.size.height - number.doubleValue * 2) / 2;
-        view.frame = CGRectMake(i * self.columnViewWidth * 2, viewY, self.columnViewWidth, number.doubleValue * 2);
+        CGFloat viewY = (self.frame.size.height - number * 2) / 2;
+        view.frame = CGRectMake(i * self.columnViewWidth * 2, viewY, self.columnViewWidth, number * 2);
     }];
     
     [self addSubview:view];

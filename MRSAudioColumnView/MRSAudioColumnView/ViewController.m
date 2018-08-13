@@ -28,11 +28,6 @@
     self.audioColumnView.backgroundColor = [UIColor colorWithRed:240/255.0 green:240/255.0 blue:240/255.0 alpha:1.0];
 }
 
-//- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
-//    self.audioColumnView.alpha = 0.4;
-//}
-
-
 - (IBAction)click:(id)sender {
     [self.audioColumnView start];
 }
@@ -43,10 +38,12 @@
 
 #pragma mark - MRSAudioColumnViewDelegate
 
-- (NSNumber *)fetchData {
+- (CGFloat)fetchData {
     // test
-    NSNumber *number = [[NSNumber alloc] initWithInt: arc4random_uniform(self.audioColumnView.frame.size.height / 2)];
-    return number;
+    // 获取从0到1的随机数
+    #define ARC4RANDOM_MAX      0x100000000
+    double val = ((double)arc4random() / ARC4RANDOM_MAX);
+    return val;
 }
 
 - (void)currentTime:(NSTimeInterval)recordTime totalTime:(NSTimeInterval)totalTime {

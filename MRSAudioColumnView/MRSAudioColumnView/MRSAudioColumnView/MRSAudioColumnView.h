@@ -11,7 +11,7 @@
 @protocol MRSAudioColumnViewDelegate <NSObject>
 
 @required
-- (NSNumber *)fetchData;
+- (CGFloat)fetchData;
 - (void)currentTime:(NSTimeInterval)recordTime totalTime:(NSTimeInterval)totalTime;
 
 @end
